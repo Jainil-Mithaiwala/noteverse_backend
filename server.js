@@ -7,9 +7,15 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/noteverse')
+// const mongoUser = 'mongo';
+// const mongoPassword = 'xGARnhVCdFajnTHonTcRSIydATFCDxmU';
+// const mongoHost = 'mongodb.railway.internal';
+// const mongoDatabase = 'noteVerseDB';
+
+// mongoose.connect('mongodb://localhost:27017/noteverse')
+mongoose.connect('mongodb+srv://jainilmithaiwala:kw4aXKLTxxngvMjG@noteverse.pfoob.mongodb.net/')
   .then(() => console.log("Database Connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("Database connection error:", err));
 
 const noteSchema = new mongoose.Schema({
   title: String,
