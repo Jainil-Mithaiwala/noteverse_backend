@@ -14,9 +14,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
+// .connect("mongodb+srv://noteverse-user:G0GSu8pwkSAtKg2S@noteverse.yg9ke.mongodb.net/?retryWrites=true&w=majority&appName=noteverse")
 mongoose
-  .connect("mongodb://localhost:27017/noteverse")
-  .then(() => console.log("Database Connected. Ready to roll!"))
+// .connect("mongodb://localhost:27017/noteverse")
+.connect(process.env.MONGO_URI)
+.then(() => console.log("Database Connected. Ready to roll!"))
   .catch((err) =>
     console.log("Oops! Something went wrong with DB connection:", err)
   );
