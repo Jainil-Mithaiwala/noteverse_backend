@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import GoogleGenerativeAI from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Load environment variables
 dotenv.config();
