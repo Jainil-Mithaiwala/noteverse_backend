@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Methods from "./Init/Methods";
 
-// Load environment variables
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -18,10 +18,7 @@ const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash-latest",
 });
 
-// MongoDB connection
-// .connect("mongodb+srv://noteverse-user:G0GSu8pwkSAtKg2S@noteverse.yg9ke.mongodb.net/?retryWrites=true&w=majority&appName=noteverse")
 mongoose
-  // .connect("mongodb://localhost:27017/noteverse")
   .connect(process.env.MONGO_URI)
   .then(() =>
     app.listen(5000, () => {
@@ -32,15 +29,12 @@ mongoose
     console.log("Oops! Something went wrong with DB connection:", err)
   );
 
-// Note Schema
 const noteSchema = new mongoose.Schema({
   title: String,
   content: String,
   completed: { type: Boolean, default: false },
   date: { type: Date, default: Date.now },
 });
-
-// const Note = mongoose.model("Note", noteSchema);
 
 const createNoteModel = (userId) => {
   const collectionName = `notes_${userId}`; // Create collection name based on userId
@@ -60,7 +54,6 @@ const createNoteModel = (userId) => {
   return mongoose.model(collectionName, noteSchema); // Return a dynamic model for the user
 };
 
-// User Schema
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   mobile: { type: String, required: true, unique: true },
@@ -71,7 +64,6 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-// Middleware to verify the JWT token
 const verifyToken = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
@@ -243,12 +235,12 @@ app.get("/notes", verifyToken, async (req, res) => {
 });
 
 app.post("/notes", verifyToken, async (req, res) => {
-  const userId = req.userId; // Get the userId from the verified token
+  const userId = req.userId;
 
-  // Create the dynamic model for the specific user
   const Note = createNoteModel(userId);
 
   const { title, content } = req.body;
+
   if (!title || !content) {
     return res.status(400).json({ message: "Title and content are required!" });
   }
@@ -257,6 +249,7 @@ app.post("/notes", verifyToken, async (req, res) => {
     title,
     content,
     completed: false,
+    date: Methods.getdatetimeisostr(),
   });
 
   try {
