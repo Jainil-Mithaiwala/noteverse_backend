@@ -130,6 +130,7 @@ class Signup {
                         next()
 
                 } catch (err) {
+                        console.error("Login Error:", err); // ADD THIS
                         req.ResponseBody = { status: 500, message: Config.resstatuscode["500"], err };
                         next();
                 }
