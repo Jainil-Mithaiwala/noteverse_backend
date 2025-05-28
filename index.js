@@ -3,7 +3,7 @@ import express from 'express'
 import router from './Route.js'
 import http from 'http'
 import cors from 'cors'
-import fileUpload from 'express-fileupload' 
+import fileUpload from 'express-fileupload'
 import { Config } from "./config/Init.js"
 
 if (!["uat", "production"].includes(process.env.NODE_ENV)) {
@@ -17,7 +17,11 @@ const app = express()
 const server = http.createServer(app)
 
 app.use(fileUpload())
-app.use(cors({ origin: true, exposedHeaders: ['key', 'token', 'unqkey'] }))
+// app.use(cors({ origin: true, exposedHeaders: ['key', 'token', 'unqkey'] }))
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 app.use(express.json({ limit: '50mb' }))
 app.use("/", router)//API ROUTES
 

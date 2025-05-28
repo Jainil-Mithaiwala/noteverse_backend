@@ -81,6 +81,8 @@ class Signup {
         async Login(req, res, next) {
                 try {
                         const { email, password } = req.body;
+                        console.log("🚀 ~ Signup.js:84 ~ Signup ~ Login ~ email, password>>", email, password);
+
 
                         if (!email || !password) {
                                 return res.status(400).json({
